@@ -1,59 +1,144 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Booking App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel application running in a fully containerised local development environment (Docker Compose).
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Service | Image | Port |
+|---------|-------|------|
+| PHP-FPM | `php:8.2-fpm` | — |
+| Nginx | `nginx:1.25-alpine` | `8080` |
+| MySQL | `mysql:8.0` | `3306` |
+| Redis | `redis:7-alpine` | `6379` |
+| MailHog | `mailhog/mailhog` | `8025` (UI) / `1025` (SMTP) |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Requirements
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- [Docker](https://docs.docker.com/get-docker/) ≥ 24
+- [Docker Compose](https://docs.docker.com/compose/) ≥ 2
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Getting Started
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 1. Clone the repository
 
-### Premium Partners
+```bash
+git clone <repo-url>
+cd booking_app
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 2. Start containers & install Laravel
 
-## Contributing
+```bash
+# Build images and start all services
+docker compose up -d --build
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Install a fresh Laravel project, generate app key, and run migrations
+./dev install
+```
 
-## Code of Conduct
+The application will be available at **http://localhost:8080**.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 3. (Existing codebase) Install dependencies only
 
-## Security Vulnerabilities
+```bash
+docker compose up -d --build
+./dev composer install
+./dev artisan key:generate
+./dev artisan migrate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## Environment
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The `.env` file is pre-configured with Docker service names as hostnames. The important defaults are:
+
+```dotenv
+DB_HOST=mysql
+DB_DATABASE=booking_app
+DB_USERNAME=booking
+DB_PASSWORD=secret
+
+REDIS_HOST=redis
+
+MAIL_HOST=mailhog
+MAIL_PORT=1025
+```
+
+> **Security:** Never commit `.env` to version control. Add it to `.gitignore`.
+
+---
+
+## `./dev` CLI
+
+A convenience wrapper around `docker compose` for day-to-day tasks:
+
+```bash
+./dev up              # Start all containers
+./dev down            # Stop all containers
+./dev restart         # Restart all containers
+./dev install         # Fresh Laravel install + migrate
+./dev artisan <cmd>   # Run php artisan inside the container
+./dev composer <cmd>  # Run composer inside the container
+./dev shell           # Open a bash shell in the app container
+./dev shell-mysql     # Open a MySQL shell
+./dev logs [service]  # Tail logs (default: app)
+./dev build           # Rebuild Docker images (no cache)
+./dev clean           # Remove containers AND volumes ⚠️
+```
+
+---
+
+## Project Structure
+
+```
+booking_app/
+├── docker/
+│   ├── nginx/
+│   │   └── default.conf       # Nginx virtual host config
+│   ├── php/
+│   │   ├── Dockerfile         # PHP 8.2-FPM image
+│   │   └── local.ini          # PHP ini overrides
+│   └── mysql/
+│       └── my.cnf             # MySQL config
+├── docker-compose.yml
+├── .env                       # Local environment variables
+├── .dockerignore
+└── dev                        # Helper CLI script
+```
+
+---
+
+## Useful URLs
+
+| URL | Description |
+|-----|-------------|
+| http://localhost:8080 | Application |
+| http://localhost:8025 | MailHog (email UI) |
+
+---
+
+## Common Tasks
+
+```bash
+# Run tests
+./dev artisan test
+
+# Create a new controller
+./dev artisan make:controller BookingController
+
+# Open a tinker REPL
+./dev artisan tinker
+
+# Watch queue
+./dev artisan queue:work
+
+# Clear all caches
+./dev artisan optimize:clear
+```
