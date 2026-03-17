@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'football-data' => [
+        'api-token' => env('FOOTBALL_DATA_TOKEN'),
+    ],
+
 ];
