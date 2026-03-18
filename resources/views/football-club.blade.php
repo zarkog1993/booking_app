@@ -22,7 +22,6 @@
             <img src="{{ $team->crest }}" alt="{{ $team->name }} logo" class="club-image">
         @endif
 
-        <h1>{{ $team->id }}</h1>
         <h1>{{ $team->name }}</h1>
         <p><strong>Code:</strong> {{ $team->tla ?? $team->code ?? 'N/A' }}</p>
 
