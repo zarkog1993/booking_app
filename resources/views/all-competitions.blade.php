@@ -15,7 +15,6 @@
 <body>
     @foreach ($allCompetitions as $competition)
         <div class="club-card">
-            <!-- The API often returns crest image under 'crest' instead of 'image', but we'll try 'image' first as per your output or use 'crest' fallback -->
             @if(!empty($competition->image))
                 <img src="{{ $competition->image }}" alt="{{ $competition->name }} logo" class="club-image">
             @elseif(!empty($competition->crest))
