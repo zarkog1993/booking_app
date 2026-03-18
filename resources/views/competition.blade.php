@@ -21,7 +21,7 @@
                     <img src="{{ $team->image }}" alt="{{ $team->name }} logo" class="club-image">
                 </a>
             @elseif(!empty($team->crest))
-                <a href="{{ route('show-club', $team->id) }}"> 
+                <a href="{{ route('team', $team->id) }}"> 
                     <img src="{{ $team->crest }}" alt="{{ $team->name }} logo" class="club-image">    
                 </a>
             @endif
