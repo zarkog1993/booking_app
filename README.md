@@ -2,6 +2,8 @@
 
 A Laravel application running in a fully containerised local development environment (Docker Compose).
 
+This application integrates with the [Football-Data.org API](https://www.football-data.org/) using the [`einar-hansen/php-football-data`](https://github.com/einar-hansen/php-football-data) package to fetch and display football competitions and team data.
+
 ---
 
 ## Stack

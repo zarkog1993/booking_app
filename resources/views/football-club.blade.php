@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $team->name ?? 'Football Club' }}</title>
+    @vite('resources/css/app.css')
     <style>
         body { font-family: sans-serif; padding: 2rem; max-width: 600px; margin: auto; }
         .club-card { border: 1px solid #ddd; padding: 2rem; border-radius: 8px; text-align: center; }

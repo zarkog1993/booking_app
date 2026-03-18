@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $team->name ?? 'Football Club' }}</title>
+    @vite('resources/css/app.css')
     <style>
         body { font-family: sans-serif; padding: 2rem; max-width: 600px; margin: auto; }
         .club-card { border: 1px solid #ddd; padding: 2rem; border-radius: 8px; text-align: center; }
@@ -23,7 +24,7 @@
 
             <h1>{{ $competition->name }}</h1>
             <p><strong>Code:</strong> {{ $competition->tla ?? $competition->code ?? 'N/A' }}</p>
-            <a href="{{ route('competition-teams', $competition->id) }}">View Teams</a>
+            <button type="button" class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none"><a href="{{ route('competition', $competition->id) }}">View Teams</a></button>
         </div>
     @endforeach
 </body>

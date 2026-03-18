@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $team->name ?? 'Football Club' }}</title>
+    @vite('resources/css/app.css')
     <style>
         body { font-family: sans-serif; padding: 2rem; max-width: 600px; margin: auto; }
         .club-card { border: 1px solid #ddd; padding: 2rem; border-radius: 8px; text-align: center; }
@@ -17,7 +18,7 @@
         <div class="club-card">
             <!-- The API often returns crest image under 'crest' instead of 'image', but we'll try 'image' first as per your output or use 'crest' fallback -->
             @if(!empty($team->image))
-                <a href="{{ route('show-club', $team->id) }}">
+                <a href="{{ route('team', $team->id) }}">
                     <img src="{{ $team->image }}" alt="{{ $team->name }} logo" class="club-image">
                 </a>
             @elseif(!empty($team->crest))
