@@ -11,15 +11,16 @@ class HomeController extends Controller
         $allCompetitions = Cache::remember('all_competitions', 86400, function () use ($footballDataService) {
             return $footballDataService->competitions()->all();
         });
+
         return view('all-competitions', compact('allCompetitions'));
     }
 
     public function showCompetition(FootballDataService $footballDataService, $competitionId) {
         $cacheKey = "competition_{$competitionId}";
-        
         $competition = Cache::remember($cacheKey, 86400, function () use ($footballDataService, $competitionId) {
             return $footballDataService->competitions()->teams($competitionId);
         });
+
         return view('competition', compact('competition'));
     }
 
@@ -28,6 +29,20 @@ class HomeController extends Controller
         $team = Cache::remember($cacheKey, 86400, function () use ($footballDataService, $teamId) {
             return $footballDataService->teams()->find($teamId);
         });
+
         return view('football-club', compact('team'));
+    }
+
+    public function matches(FootballDataService $footballDataService, $competitionId)
+    {
+        $cacheKey = "match_$competitionId";
+        $matches = Cache::remember($cacheKey, 86400, function () use ($footballDataService, $competitionId) {
+            return $footballDataService->competitions()->matches($competitionId);
+        });
+
+        // return response()->json($matches);
+
+        return view('matches', compact('matches'));
+
     }
 }

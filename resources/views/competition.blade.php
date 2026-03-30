@@ -1,49 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $team->name ?? 'Football Club' }}</title>
-    @vite('resources/css/app.css')
-    <style>
-        body { font-family: sans-serif; padding: 2rem; max-width: 600px; margin: auto; }
-        .club-card { border: 1px solid #ddd; padding: 2rem; border-radius: 8px; text-align: center; }
-        .club-image { max-width: 150px; }
-        .details { text-align: left; margin-top: 2rem; }
-        .details p { margin: 0.5rem 0; }
-    </style>
-</head>
-<body>
+@extends('layout.app')
+@section('content')
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 mt-20">
+
     @foreach ($competition as $team)
-        <div class="club-card">
-            <!-- The API often returns crest image under 'crest' instead of 'image', but we'll try 'image' first as per your output or use 'crest' fallback -->
-            @if(!empty($team->image))
+        <div class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs">
+            <a href="#">
+                 @if(!empty($team->image))
                 <a href="{{ route('team', $team->id) }}">
-                    <img src="{{ $team->image }}" alt="{{ $team->name }} logo" class="club-image">
+                    <img src="{{ $team->image }}" alt="{{ $team->name }} logo" class="rounded-base">
                 </a>
             @elseif(!empty($team->crest))
                 <a href="{{ route('team', $team->id) }}"> 
-                    <img src="{{ $team->crest }}" alt="{{ $team->name }} logo" class="club-image">    
+                    <img src="{{ $team->crest }}" alt="{{ $team->name }} logo" class="rounded-base">    
                 </a>
             @endif
-
-            <h1>{{ $team->name }}</h1>
-            <p><strong>Code:</strong> {{ $team->tla ?? $team->code ?? 'N/A' }}</p>
-
-            <div class="details">
-                <p><strong>Founded:</strong> {{ $team->founded ?? 'Unknown' }}</p>
-                <p><strong>Colors:</strong> {{ $team->colors ?? 'Unknown' }}</p>
-                <p><strong>Stadium:</strong> {{ $team->venue ?? 'Unknown' }}</p>
-                
-                <p><strong>Address:</strong><br>
-                    {{ $team->address ?? 'No address provided' }}
-                </p>
-
-                @if(!empty($team->website))
-                    <p><strong>Website:</strong> <a href="{{ $team->website }}" target="_blank">{{ $team->website }}</a></p>
-                @endif
-            </div>
+                <img class="" src="/docs/images/blog/image-1.jpg" alt="" />
+            </a>
+            <a href="#">
+                <h5 class="mt-6 mb-2 text-2xl font-semibold tracking-tight text-heading">{{ $team->name }}</h5>
+            </a>
+            <p class="mb-6 text-body">Founded: {{ $team->founded ?? 'Unknown' }}</p>
+            <p class="mb-6 text-body">Colors: {{ $team->colors ?? 'Unknown' }}</p>
+            <p class="mb-6 text-body">Address: {{ $team->address ?? 'Unknown' }}</p>
+            <p class="mb-6 text-body">Short Name: {{ $team->tla ?? $team->code ?? 'N/A' }}</p>
+            <p class="mb-6 text-body">Stadium: {{ $team->venue ?? 'Unknown' }}</p>
+            <a href="{{ route('team', $team->id) }}" class="inline-flex items-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+                Read more
+                <svg class="w-4 h-4 ms-1.5 rtl:rotate-180 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
+            </a>
         </div>
     @endforeach
-</body>
-</html>
+</div>
+@endsection
