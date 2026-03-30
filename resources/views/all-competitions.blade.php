@@ -1,5 +1,6 @@
 @extends('layout.app')
 @section('content')
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 mt-20">
     @foreach ($allCompetitions as $competition)
         <a href="{{ route('competition', $competition->id) }}" class="flex flex-col items-center bg-neutral-primary-soft p-6 border border-default rounded-base shadow-xs md:flex-row md:max-w-xl md:flex-row md:max-w-xl">
             <img class="object-cover w-full rounded-base h-64 md:h-auto md:w-48 mb-4 md:mb-0" src="{{ $competition->image ?? $competition->crest ?? '' }}" alt="">
@@ -13,4 +14,5 @@
             </div>
         </a>
     @endforeach
+    </div>
 @endsection

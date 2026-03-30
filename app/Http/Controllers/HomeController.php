@@ -32,4 +32,17 @@ class HomeController extends Controller
 
         return view('football-club', compact('team'));
     }
+
+    public function matches(FootballDataService $footballDataService, $competitionId)
+    {
+        $cacheKey = "match_$competitionId";
+        $matches = Cache::remember($cacheKey, 86400, function () use ($footballDataService, $competitionId) {
+            return $footballDataService->competitions()->matches($competitionId);
+        });
+
+        // return response()->json($matches);
+
+        return view('matches', compact('matches'));
+
+    }
 }

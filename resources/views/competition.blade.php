@@ -1,5 +1,7 @@
 @extends('layout.app')
 @section('content')
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 mt-20">
+
     @foreach ($competition as $team)
         <div class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs">
             <a href="#">
@@ -28,4 +30,5 @@
             </a>
         </div>
     @endforeach
+</div>
 @endsection
